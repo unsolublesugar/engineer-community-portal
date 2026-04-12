@@ -1,0 +1,26 @@
+name: "My Community"
+formal_name: "エンジニア達のLTイベント"
+description: "エンジニアリングが好きなエンジニアのためのコミュニティ。気軽に技術を学び合える場を提供しています。"
+connpass_url: "https://example.connpass.com/"
+youtube_channel: "https://www.youtube.com/@example"
+hashtag: "#MyLT"
+schedule: "毎月最終火曜日 20:00〜"
+discord_url: ""
+slack_url: ""
+zenn_url: ""
+qiita_url: ""
+
+stats:
+  since: 2024
+  total_events: 3
+  total_talks: 6
+
+organizers:
+  - name: "organizer1"
+    role: "企画"
+    twitter: ""
+    icon_url: ""
+  - name: "organizer2"
+    role: "配信"
+    twitter: ""
+    icon_url: ""

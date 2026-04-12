@@ -1,0 +1,11 @@
+number: 3
+title: 'LTイベント #3'
+date: '2024-03-26'
+connpass_url: https://example.connpass.com/event/000003/
+youtube_url: ''
+hashtag: '#MyLT'
+talks:
+- title: （開催予定 - 発表者募集中）
+  speaker:
+    name: TBD
+    id: tbd

@@ -1,0 +1,23 @@
+number: 2
+title: 'LTイベント #2'
+date: '2024-02-27'
+connpass_url: https://example.connpass.com/event/000002/
+youtube_url: ''
+hashtag: '#MyLT'
+talks:
+- title: CI/CD入門
+  speaker:
+    name: Speaker C
+    id: speaker_c
+  youtube_timestamp: '0:10:00'
+  tags:
+  - CI/CD
+  - 自動化
+- title: データベース設計の基本
+  speaker:
+    name: Speaker A
+    id: speaker_a
+  youtube_timestamp: '0:30:00'
+  tags:
+  - DB
+  - 設計

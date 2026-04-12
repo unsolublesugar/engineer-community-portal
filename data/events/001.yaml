@@ -1,0 +1,23 @@
+number: 1
+title: 'LTイベント #1'
+date: '2024-01-30'
+connpass_url: https://example.connpass.com/event/000001/
+youtube_url: ''
+hashtag: '#MyLT'
+talks:
+- title: はじめてのLT発表
+  speaker:
+    name: Speaker A
+    id: speaker_a
+  youtube_timestamp: '0:10:00'
+  tags:
+  - 初心者
+  - LT
+- title: Webフレームワーク入門
+  speaker:
+    name: Speaker B
+    id: speaker_b
+  youtube_timestamp: '0:30:00'
+  tags:
+  - Web
+  - フレームワーク

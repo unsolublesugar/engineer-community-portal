@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}ページが見つかりません | {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="not-found">
+    <h1>404</h1>
+    <p>お探しのページは見つかりませんでした。</p>
+    <a href="{{ base_path }}/" class="btn btn-primary">トップページへ戻る</a>
+  </div>
+</div>
+{% endblock %}

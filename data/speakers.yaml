@@ -1,0 +1,15 @@
+- id: speaker_a
+  name: Speaker A
+  icon_url: ""
+  twitter: ""
+  github: speaker-a
+- id: speaker_b
+  name: Speaker B
+  icon_url: ""
+  twitter: ""
+  github: speaker-b
+- id: speaker_c
+  name: Speaker C
+  icon_url: ""
+  twitter: ""
+  github: speaker-c

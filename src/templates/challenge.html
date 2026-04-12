@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}企画コーナー | {{ site_name }}{% endblock %}
+{% block nav_challenge %}active{% endblock %}
+
+{% block content %}
+<div class="container">
+  <header class="page-header">
+    <h1>企画コーナー</h1>
+    <p class="page-lead">イベント内で実施した企画・特別コーナーのアーカイブ</p>
+  </header>
+
+  {% if challenges %}
+  <section class="challenge-section">
+    <h2>💪 チャレンジコーナー</h2>
+    <p class="challenge-lead">運営メンバーが限られた時間で未知のお題に挑む企画コーナー。うまくいかないことも多いですが、失敗も含めて学びを楽しむ姿勢を大切にしています。</p>
+    <div class="challenge-list">
+      {% for item in challenges %}
+      <a href="{{ base_path }}/events/{{ '%03d' | format(item.event_number) }}" class="challenge-card">
+        <div class="challenge-card-header">
+          <span class="event-number">#{{ item.event_number }}</span>
+          <span class="event-date">{{ item.date }}</span>
+        </div>
+        <h3 class="challenge-card-title">{{ item.title }}</h3>
+        {% if item.youtube_url and item.youtube_timestamp %}
+        <span class="challenge-video-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          動画を見る（{{ item.youtube_timestamp }}〜）
+        </span>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+  {% if deep_dives %}
+  <section class="challenge-section">
+    <h2>🔍 ちょこっと深堀り！</h2>
+    <p class="challenge-lead">登壇内容の深堀りや、勉強方法・アウトプットへの姿勢などについて登壇者同士で語り合う、オンライン懇親会的なコーナーです。</p>
+    <div class="challenge-list">
+      {% for item in deep_dives %}
+      <a href="{{ base_path }}/events/{{ '%03d' | format(item.event_number) }}" class="challenge-card">
+        <div class="challenge-card-header">
+          <span class="event-number">#{{ item.event_number }}</span>
+          <span class="event-date">{{ item.date }}</span>
+        </div>
+        <h3 class="challenge-card-title">{{ item.title }}</h3>
+        {% if item.youtube_url and item.youtube_timestamp %}
+        <span class="challenge-video-link">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          動画を見る（{{ item.youtube_timestamp }}〜）
+        </span>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
