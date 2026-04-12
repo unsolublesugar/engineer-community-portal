@@ -21,3 +21,8 @@ talks:
   tags:
   - DB
   - 設計
+- title: ちょこっと深堀り！
+  speaker:
+    name: My Community
+    id: easy2
+  youtube_timestamp: '0:50:00'

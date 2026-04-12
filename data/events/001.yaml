@@ -21,3 +21,8 @@ talks:
   tags:
   - Web
   - フレームワーク
+- title: 'チャレンジコーナー: 初心者向けライブコーディング'
+  speaker:
+    name: My Community
+    id: easy2
+  youtube_timestamp: '0:50:00'
