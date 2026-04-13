@@ -26,6 +26,7 @@
     {% for speaker in speakers %}
     <div class="speaker-card" data-name="{{ speaker.name }}" data-id="{{ speaker.id }}" data-twitter="{{ speaker.twitter }}" data-github="{{ speaker.github }}" data-count="{{ speaker.talk_count }}" data-latest="{{ speaker.latest_date }}">
       <div class="speaker-card-header">
+        <a href="{{ base_path }}/speakers/{{ speaker.id }}/" class="speaker-avatar-link">
         {% if speaker.resolved_icon_url %}
         <img src="{{ speaker.resolved_icon_url }}" alt="{{ speaker.name }}" class="speaker-avatar-lg" loading="lazy">
         {% elif speaker.icon_url %}
@@ -35,8 +36,9 @@
           {{ speaker.name[:1] }}
         </div>
         {% endif %}
+        </a>
         <div class="speaker-card-info">
-          <h3>{{ speaker.name }}{% if speaker.name != speaker.id %} <span class="speaker-id">@{{ speaker.id }}</span>{% endif %}</h3>
+          <h3><a href="{{ base_path }}/speakers/{{ speaker.id }}/" class="speaker-name-link">{{ speaker.name }}</a>{% if speaker.name != speaker.id %} <span class="speaker-id">@{{ speaker.id }}</span>{% endif %}</h3>
           <span class="speaker-count">{{ speaker.talk_count }}回登壇</span>
           <div class="speaker-links">
             {% if speaker.twitter %}

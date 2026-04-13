@@ -159,6 +159,11 @@ def build_speakers(events: list[dict], master: dict[str, dict]) -> list[dict]:
                 "event_title": event.get("title", ""),
                 "date": event.get("date", ""),
                 "tags": talk.get("tags", []),
+                "slide_url": talk.get("slide_url", ""),
+                "article_url": talk.get("article_url", ""),
+                "youtube_timestamp": talk.get("youtube_timestamp", ""),
+                "youtube_url": event.get("youtube_url", ""),
+                "description": talk.get("description", ""),
             })
 
     # アイコンURLを優先度に従って解決
@@ -173,6 +178,8 @@ def build_speakers(events: list[dict], master: dict[str, dict]) -> list[dict]:
     )
     for s in speakers:
         s["talk_count"] = len(s["talks"])
+        # 発表を開催日降順（新しい順）でソート
+        s["talks"].sort(key=lambda t: t.get("date", ""), reverse=True)
         # 最新の登壇日を記録（ソート用）
         dates = [t["date"] for t in s["talks"] if t.get("date")]
         s["latest_date"] = max(dates) if dates else ""
@@ -532,6 +539,19 @@ def build_site():
         **{k: v for k, v in common_ctx.items() if k != "base_path"},
     )
     (speakers_dir / "index.html").write_text(html, encoding="utf-8")
+
+    # 5-2. 登壇者個別ページ
+    tpl = env.get_template("speaker_detail.html")
+    for speaker in speakers:
+        speaker_dir = speakers_dir / speaker["id"]
+        speaker_dir.mkdir(exist_ok=True)
+        print(f"  📄 speakers/{speaker['id']}/index.html")
+        html = tpl.render(
+            speaker=speaker,
+            base_path="../..",
+            **{k: v for k, v in common_ctx.items() if k != "base_path"},
+        )
+        (speaker_dir / "index.html").write_text(html, encoding="utf-8")
 
     # 6. 404ページ
     print("  📄 404.html")

@@ -79,8 +79,10 @@
       {% for talk in event.talks %}
       {% if talk.speaker.id != 'tbd' %}
       <div class="talk-card" id="talk-{{ loop.index }}">
+        {% set has_speaker_page = talk.speaker.id != 'tbd' %}
         <div class="talk-card-header">
           <div class="talk-speaker">
+            {% if has_speaker_page %}<a href="{{ base_path }}/speakers/{{ talk.speaker.id }}/" class="speaker-avatar-link">{% endif %}
             {% if talk.speaker.resolved_icon_url %}
             <img src="{{ talk.speaker.resolved_icon_url }}" alt="{{ talk.speaker.name }}" class="speaker-avatar" loading="lazy">
             {% elif talk.speaker.icon_url %}
@@ -90,8 +92,9 @@
               {{ talk.speaker.name[:1] }}
             </div>
             {% endif %}
+            {% if has_speaker_page %}</a>{% endif %}
             <div class="speaker-info">
-              <span class="speaker-name">{{ talk.speaker.name }}{% if talk.speaker.name != talk.speaker.id %} <span class="speaker-id">@{{ talk.speaker.id }}</span>{% endif %}</span>
+              <span class="speaker-name">{% if has_speaker_page %}<a href="{{ base_path }}/speakers/{{ talk.speaker.id }}/" class="speaker-name-link">{{ talk.speaker.name }}</a>{% else %}{{ talk.speaker.name }}{% endif %}{% if talk.speaker.name != talk.speaker.id %} <span class="speaker-id">@{{ talk.speaker.id }}</span>{% endif %}</span>
               <div class="speaker-links">
                 {% if talk.speaker.twitter %}
                 <a href="https://x.com/{{ talk.speaker.twitter }}" target="_blank" rel="noopener" title="X (Twitter)">
