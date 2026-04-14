@@ -191,14 +191,14 @@
     </section>
 
     <nav class="event-nav">
-      {% if prev_event_num %}
-      <a href="{{ base_path }}/events/{{ '%03d' | format(prev_event_num) }}" class="btn btn-outline event-nav-btn">← #{{ prev_event_num }}</a>
+      {% if next_event_num %}
+      <a href="{{ base_path }}/events/{{ '%03d' | format(next_event_num) }}" class="btn btn-outline event-nav-btn">← #{{ next_event_num }}</a>
       {% else %}
       <span class="event-nav-btn"></span>
       {% endif %}
       <a href="{{ base_path }}/" class="btn btn-outline event-nav-btn">イベント一覧</a>
-      {% if next_event_num %}
-      <a href="{{ base_path }}/events/{{ '%03d' | format(next_event_num) }}" class="btn btn-outline event-nav-btn">#{{ next_event_num }} →</a>
+      {% if prev_event_num %}
+      <a href="{{ base_path }}/events/{{ '%03d' | format(prev_event_num) }}" class="btn btn-outline event-nav-btn">#{{ prev_event_num }} →</a>
       {% else %}
       <span class="event-nav-btn"></span>
       {% endif %}
