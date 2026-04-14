@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_macros.html" import share_button with context %}
 
 {% block title %}{{ speaker.name }} の発表一覧 | {{ site_name }}{% endblock %}
 {% block nav_speakers %}active{% endblock %}
@@ -53,7 +54,12 @@
   </header>
 
   <section class="speaker-talks-section">
-    <h2>発表一覧</h2>
+    <div class="section-header-row">
+      <h2>発表一覧</h2>
+      {% if site_url %}
+      {{ share_button(speaker.name + ' の発表一覧 | ' + site_name, '/speakers/' + speaker.id) }}
+      {% endif %}
+    </div>
     <div class="speaker-talks">
       {% for talk in speaker.talks %}
       <div class="speaker-talk-card">
