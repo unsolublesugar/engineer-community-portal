@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_macros.html" import share_button with context %}
 
 {% block title %}{{ event.title }} | {{ site_name }}{% endblock %}
 {% block og_title %}{{ event.title }}{% endblock %}
@@ -28,7 +29,14 @@
         </a>
         {% endif %}
         {% if event.hashtag %}
+        {% if site_url %}
+        <a href="https://twitter.com/intent/tweet?text={{ event.title | urlencode }}&url={{ (site_url + '/events/' + '%03d' | format(event.number)) | urlencode }}&hashtags={{ (event.hashtag | replace('#', '')) | urlencode }}"
+           target="_blank" rel="noopener" class="meta-item hashtag hashtag-share" title="Xでシェア">
+          {{ event.hashtag }}
+        </a>
+        {% else %}
         <span class="meta-item hashtag">{{ event.hashtag }}</span>
+        {% endif %}
         {% endif %}
       </div>
     </header>
