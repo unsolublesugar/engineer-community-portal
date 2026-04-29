@@ -1,0 +1,23 @@
+number: 5
+title: 'LTイベント #5（開催予定・部分確定サンプル）'
+date: '2026-06-24'
+connpass_url: https://connpass.com/
+youtube_url: ''
+hashtag: '#MyLT'
+talks:
+- title: サンプルLT - 確定枠1
+  speaker:
+    name: Speaker A
+    id: speaker_a
+  tags:
+  - サンプル
+- title: サンプルLT - 確定枠2
+  speaker:
+    name: Speaker B
+    id: speaker_b
+  tags:
+  - サンプル
+- title: （発表者募集中）
+  speaker:
+    name: TBD
+    id: tbd
