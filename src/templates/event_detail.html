@@ -84,8 +84,8 @@
 
     <section class="talks-section">
       <h2>発表一覧</h2>
-      {% for talk in event.talks %}
-      {% if talk.speaker.id != 'tbd' %}
+      {% set confirmed_talks = event.talks | selectattr('speaker.id', 'ne', 'tbd') | list %}
+      {% for talk in confirmed_talks %}
       <div class="talk-card" id="talk-{{ loop.index }}">
         {% set has_speaker_page = talk.speaker.id != 'tbd' %}
         <div class="talk-card-header">
@@ -187,15 +187,19 @@
           {% endif %}
         </div>
       </div>
-      {% else %}
+      {% endfor %}
+      {% if event.tbd_count and event.tbd_count > 0 %}
       <div class="talk-card talk-card-tbd">
+        {% if confirmed_talks %}
+        <p class="tbd-message">発表者あと{{ event.tbd_count }}枠募集中です！参加をご検討ください。</p>
+        {% else %}
         <p class="tbd-message">発表者募集中です！参加をご検討ください。</p>
+        {% endif %}
         {% if event.connpass_url %}
         <a href="{{ event.connpass_url }}" target="_blank" rel="noopener" class="btn btn-outline">connpassで申し込む</a>
         {% endif %}
       </div>
       {% endif %}
-      {% endfor %}
     </section>
 
     <nav class="event-nav">
