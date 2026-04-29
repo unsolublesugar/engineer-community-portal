@@ -40,6 +40,8 @@ def load_all_events() -> list[dict]:
     for yaml_file in sorted(EVENTS_DIR.glob("*.yaml"), reverse=True):
         event = load_yaml(yaml_file)
         if event:
+            if event.get("youtube_url"):
+                event["youtube_url"] = normalize_youtube_url(event["youtube_url"])
             talks = event.get("talks", [])
             event["talk_count"] = len([
                 t for t in talks
@@ -228,6 +230,21 @@ def extract_youtube_video_id(url: str) -> str:
     return ""
 
 
+def normalize_youtube_url(url: str) -> str:
+    """YouTube URLを `watch?v=VIDEO_ID` 形式に正規化する。
+
+    テンプレートで `&t=Xs` を付与する都合上、URLは `?v=` を含む形式である必要がある。
+    `/live/` や `youtu.be/` 形式のままだと `&t=` が `?` の前に付き再生位置が無視されるため、
+    ここで `watch?v=` 形式に揃える。
+    """
+    if not url:
+        return ""
+    video_id = extract_youtube_video_id(url)
+    if not video_id:
+        return url
+    return f"https://www.youtube.com/watch?v={video_id}"
+
+
 def youtube_embed_url(url: str, timestamp: str = "") -> str:
     """YouTube URLを埋め込みURLに変換"""
     video_id = extract_youtube_video_id(url)
@@ -328,14 +345,8 @@ def generate_slide_embed_url(slide_url: str, sd_cache: dict[str, str]) -> str:
             return f"https://www.docswell.com/slide/{slug}/embed"
 
     # --- SlideShare ---
-    if "slideshare.net/" in slide_url and "/embed" not in slide_url:
-        # URL例: https://www.slideshare.net/USERNAME/SLUG
-        # 埋め込み: https://www.slideshare.net/slideshow/SLUG/embed
-        # ※ secret リンクはスキップ
-        if "/secret/" not in slide_url:
-            slug = slide_url.split("?")[0].split("#")[0].rstrip("/").split("/")[-1]
-            if slug:
-                return f"https://www.slideshare.net/slideshow/{slug}/embed"
+    # SlideShare は anti-bot challenge により iframe 埋め込みが不安定なため、
+    # 自動 embed は生成せず、外部リンクのみとする。
 
     # --- slides.com ---
     if "slides.com/" in slide_url and "/embed" not in slide_url:
