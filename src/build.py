@@ -39,6 +39,8 @@ def load_all_events() -> list[dict]:
     for yaml_file in sorted(EVENTS_DIR.glob("*.yaml"), reverse=True):
         event = load_yaml(yaml_file)
         if event:
+            if event.get("youtube_url"):
+                event["youtube_url"] = normalize_youtube_url(event["youtube_url"])
             # 発表数をカウント（TBD除外）
             talks = event.get("talks", [])
             event["talk_count"] = len([
@@ -214,6 +216,21 @@ def extract_youtube_video_id(url: str) -> str:
     elif "/live/" in url:
         return url.split("/live/")[1].split("?")[0]
     return ""
+
+
+def normalize_youtube_url(url: str) -> str:
+    """YouTube URLを `watch?v=VIDEO_ID` 形式に正規化する。
+
+    テンプレートで `&t=Xs` を付与する都合上、URLは `?v=` を含む形式である必要がある。
+    `/live/` や `youtu.be/` 形式のままだと `&t=` が `?` の前に付き再生位置が無視されるため、
+    ここで `watch?v=` 形式に揃える。
+    """
+    if not url:
+        return ""
+    video_id = extract_youtube_video_id(url)
+    if not video_id:
+        return url
+    return f"https://www.youtube.com/watch?v={video_id}"
 
 
 def youtube_embed_url(url: str, timestamp: str = "") -> str:
