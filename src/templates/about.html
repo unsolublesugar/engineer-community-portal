@@ -90,9 +90,9 @@
     <section class="about-section">
       <h2>参加方法</h2>
       <div class="join-cards">
-        <a href="{{ community.connpass_url }}" target="_blank" rel="noopener" class="join-card">
+        <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="join-card">
           <h3>イベントに参加する</h3>
-          <p>connpassからイベントに申し込めます。視聴のみでもOK！</p>
+          <p>{{ community.community_service.name }}からイベントに申し込めます。視聴のみでもOK！</p>
         </a>
         <a href="{{ community.youtube_channel }}" target="_blank" rel="noopener" class="join-card">
           <h3>アーカイブを見る</h3>
@@ -104,7 +104,9 @@
     <section class="about-section">
       <h2>関連リンク</h2>
       <ul class="link-list">
-        <li><a href="{{ community.connpass_url }}" target="_blank" rel="noopener">connpass - イベントページ</a></li>
+        {% if community.community_url %}
+        <li><a href="{{ community.community_url }}" target="_blank" rel="noopener">{{ community.community_service.name }} - イベントページ</a></li>
+        {% endif %}
         <li><a href="{{ community.youtube_channel }}" target="_blank" rel="noopener">YouTube - 配信アーカイブ</a></li>
         {% if community.zenn_url %}
         <li><a href="{{ community.zenn_url }}" target="_blank" rel="noopener">Zenn - 技術記事</a></li>

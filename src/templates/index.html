@@ -25,7 +25,7 @@
         <span class="hero-stat-label">LT発表数</span>
       </div>
     </div>
-    <a href="{{ community.connpass_url }}" target="_blank" rel="noopener" class="btn btn-primary hero-cta-mobile">参加する</a>
+    <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="btn btn-primary hero-cta-mobile">参加する</a>
   </div>
 </section>
 
@@ -78,8 +78,8 @@
           {% else %}
           <p class="event-upcoming-message">参加者・登壇者募集中！</p>
           {% endif %}
-          {% if event.connpass_url %}
-          <span class="event-upcoming-cta">connpassでチェック →</span>
+          {% if event.event_url %}
+          <span class="event-upcoming-cta">{{ event.event_service.name }}でチェック →</span>
           {% endif %}
         </div>
         {% else %}

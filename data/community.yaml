@@ -1,7 +1,7 @@
 name: "My Community"
 formal_name: "エンジニア達のLTイベント"
 description: "エンジニアリングが好きなエンジニアのためのコミュニティ。気軽に技術を学び合える場を提供しています。"
-connpass_url: ""
+community_url: ""
 youtube_channel: ""
 hashtag: "#MyLT"
 schedule: "毎月最終火曜日 20:00〜"

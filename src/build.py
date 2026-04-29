@@ -33,6 +33,32 @@ def load_yaml(filepath: Path) -> dict:
         return yaml.safe_load(f)
 
 
+EVENT_SERVICES = {
+    "connpass.com": {"name": "connpass", "label_long": "connpassイベントページ"},
+    "doorkeeper.jp": {"name": "Doorkeeper", "label_long": "Doorkeeperイベントページ"},
+    "peatix.com": {"name": "Peatix", "label_long": "Peatixイベントページ"},
+    "techplay.jp": {"name": "TECH PLAY", "label_long": "TECH PLAYイベントページ"},
+    "meetup.com": {"name": "Meetup", "label_long": "Meetupイベントページ"},
+}
+
+DEFAULT_EVENT_SERVICE = {"name": "イベント", "label_long": "イベントページ"}
+
+
+def detect_event_service(url: str) -> dict:
+    """イベントURLからサービス名を判定し、表示用ラベルを返す。
+
+    Returns:
+        {"name": サービス短名, "label_long": 詳細リンク文言}
+        未知のドメインや空URLの場合は汎用ラベルを返す。
+    """
+    if not url:
+        return DEFAULT_EVENT_SERVICE
+    for domain, info in EVENT_SERVICES.items():
+        if domain in url:
+            return info
+    return DEFAULT_EVENT_SERVICE
+
+
 def load_all_events() -> list[dict]:
     """全イベントデータを読み込み、番号降順でソートして返す"""
     events = []
@@ -42,6 +68,7 @@ def load_all_events() -> list[dict]:
         if event:
             if event.get("youtube_url"):
                 event["youtube_url"] = normalize_youtube_url(event["youtube_url"])
+            event["event_service"] = detect_event_service(event.get("event_url", ""))
             talks = event.get("talks", [])
             event["talk_count"] = len([
                 t for t in talks
@@ -111,7 +138,9 @@ def load_community() -> dict:
     """コミュニティデータを読み込む"""
     community_file = DATA_DIR / "community.yaml"
     if community_file.exists():
-        return load_yaml(community_file)
+        community = load_yaml(community_file) or {}
+        community["community_service"] = detect_event_service(community.get("community_url", ""))
+        return community
     return {}
 
 

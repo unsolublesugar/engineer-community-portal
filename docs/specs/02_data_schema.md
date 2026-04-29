@@ -7,7 +7,7 @@
 number: 76                           # イベント番号（必須）
 title: "完全に理解したTalk #76"       # イベントタイトル（必須）
 date: "2026-04-28"                   # 開催日（必須, YYYY-MM-DD）
-connpass_url: "https://easy2.connpass.com/event/XXXXX/"  # connpassイベントURL（任意）
+event_url: "https://easy2.connpass.com/event/XXXXX/"  # イベントページURL（任意, connpass / Doorkeeper / Peatix / TECH PLAY / Meetup 等を自動判定）
 youtube_url: "https://www.youtube.com/watch?v=XXXXX"     # YouTube配信URL（任意）
 report_url: ""                       # イベントレポート記事URL（任意）
 hashtag: "#完全に理解した"             # ハッシュタグ（任意）
@@ -61,7 +61,7 @@ YouTube動画内の発表開始位置。`H:MM:SS` 形式。
 name: "EasyEasy"                          # サイト表示名
 formal_name: "エンジニア達の「完全に理解した」Talk"  # 正式名称
 description: "コミュニティの説明文"          # meta description 等に使用
-connpass_url: "https://easy2.connpass.com/"
+community_url: "https://easy2.connpass.com/"  # コミュニティの所属ページ（connpass等のグループURL、ヘッダー「参加する」ボタンの遷移先）
 youtube_channel: "https://www.youtube.com/@talk9929"
 hashtag: "#完全に理解した"
 schedule: "毎月最終火曜日 20:00〜"
