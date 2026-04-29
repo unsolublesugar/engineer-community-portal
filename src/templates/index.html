@@ -43,7 +43,8 @@
 
     <div class="events-grid" id="eventsGrid">
       {% for event in events %}
-      {% set is_upcoming = event.talks and event.talks[0].speaker.id == 'tbd' %}
+      {% set is_upcoming = event.is_upcoming %}
+      {% set confirmed_talks = event.talks | selectattr('speaker.id', 'ne', 'tbd') | list if event.talks else [] %}
       <a href="{{ base_path }}/events/{{ '%03d' | format(event.number) }}" class="event-card{% if is_upcoming %} event-card-upcoming{% endif %}" data-year="{{ event.date[:4] if event.date else '' }}">
         <div class="event-card-header">
           <div class="event-card-header-left">
@@ -57,7 +58,26 @@
         <h3 class="event-card-title">{{ event.title }}</h3>
         {% if is_upcoming %}
         <div class="event-upcoming-body">
+          {% if confirmed_talks %}
+          <div class="event-card-talks">
+            {% for talk in confirmed_talks[:3] %}
+            <div class="talk-preview">
+              <span class="talk-preview-bullet"></span>
+              <span class="talk-preview-title">{{ talk.title }}</span>
+            </div>
+            {% endfor %}
+            {% if confirmed_talks | length > 3 %}
+            <span class="talk-more">+ {{ confirmed_talks | length - 3 }}件</span>
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if event.tbd_count == 0 and confirmed_talks %}
+          <p class="event-upcoming-message">登壇者確定！ぜひご参加ください。</p>
+          {% elif confirmed_talks %}
+          <p class="event-upcoming-message">残り{{ event.tbd_count }}枠 登壇者募集中！</p>
+          {% else %}
           <p class="event-upcoming-message">参加者・登壇者募集中！</p>
+          {% endif %}
           {% if event.connpass_url %}
           <span class="event-upcoming-cta">connpassでチェック →</span>
           {% endif %}

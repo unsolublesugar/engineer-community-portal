@@ -36,15 +36,27 @@ def load_yaml(filepath: Path) -> dict:
 def load_all_events() -> list[dict]:
     """全イベントデータを読み込み、番号降順でソートして返す"""
     events = []
+    today = datetime.now().date()
     for yaml_file in sorted(EVENTS_DIR.glob("*.yaml"), reverse=True):
         event = load_yaml(yaml_file)
         if event:
-            # 発表数をカウント（TBD除外）
             talks = event.get("talks", [])
             event["talk_count"] = len([
                 t for t in talks
                 if t.get("speaker", {}).get("id") != "tbd"
             ])
+            event["tbd_count"] = len([
+                t for t in talks
+                if t.get("speaker", {}).get("id") == "tbd"
+            ])
+            event["is_upcoming"] = False
+            date_str = event.get("date", "")
+            if date_str:
+                try:
+                    event_date = datetime.strptime(str(date_str), "%Y-%m-%d").date()
+                    event["is_upcoming"] = event_date >= today
+                except ValueError:
+                    pass
             events.append(event)
     return events
 
