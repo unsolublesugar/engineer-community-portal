@@ -38,7 +38,7 @@
         <a href="{{ base_path }}/about" class="nav-link {% block nav_about %}{% endblock %}">About</a>
       </nav>
       <div class="header-actions">
-        <a href="{{ community.connpass_url }}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">参加する</a>
+        <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="btn btn-primary btn-sm">参加する</a>
       </div>
     </div>
   </header>
@@ -51,8 +51,8 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-links">
-          {% if community.connpass_url %}
-          <a href="{{ community.connpass_url }}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+          {% if community.community_url %}
+          <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
             <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             コミュニティ
           </a>
