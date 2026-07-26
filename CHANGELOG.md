@@ -7,7 +7,7 @@
 
 ## [v1.2.0] - 2026-07-26
 
-本家 [easy2-portal v1.2.0](https://github.com/unsolublesugar/easy2-portal/releases/tag/v1.2.0) のデザイン刷新をテンプレート側へ取り込みました。
+本家 easy2-portal v1.2.0 のデザイン刷新をテンプレート側へ取り込みました。
 
 ### Changed
 - サイト全体のデザインを刷新
