@@ -59,6 +59,48 @@ def detect_event_service(url: str) -> dict:
     return DEFAULT_EVENT_SERVICE
 
 
+WEEKDAYS_JA = ("月", "火", "水", "木", "金", "土", "日")
+
+
+def parse_iso_date(date_str) -> "datetime | None":
+    """'YYYY-MM-DD' 形式の日付文字列を datetime に変換する（失敗時は None）"""
+    if not date_str:
+        return None
+    try:
+        return datetime.strptime(str(date_str)[:10], "%Y-%m-%d")
+    except ValueError:
+        return None
+
+
+def date_iso(date_str) -> str:
+    """日付を 'YYYY-MM-DD' に正規化する（変換できない場合は元の文字列）"""
+    d = parse_iso_date(date_str)
+    if not d:
+        return str(date_str or "")
+    return d.strftime("%Y-%m-%d")
+
+
+def date_iso_full(date_str) -> str:
+    """'2026-06-30' → '2026-06-30（火）'（変換できない場合は元の文字列）"""
+    d = parse_iso_date(date_str)
+    if not d:
+        return str(date_str or "")
+    return f"{d.strftime('%Y-%m-%d')}（{WEEKDAYS_JA[d.weekday()]}）"
+
+
+def date_parts(date_str) -> dict:
+    """日付タイル表示用に年/月/日/曜日へ分解する（変換できない場合は空辞書）"""
+    d = parse_iso_date(date_str)
+    if not d:
+        return {}
+    return {
+        "year": d.year,
+        "month": d.month,
+        "day": d.day,
+        "weekday": WEEKDAYS_JA[d.weekday()],
+    }
+
+
 def load_all_events() -> list[dict]:
     """全イベントデータを読み込み、番号降順でソートして返す"""
     events = []
@@ -140,6 +182,9 @@ def load_community() -> dict:
     if community_file.exists():
         community = load_yaml(community_file) or {}
         community["community_service"] = detect_event_service(community.get("community_url", ""))
+        # 開催スケジュール文言から開始時刻を抽出（次回開催バナーの日付タイル用）
+        m = re.search(r"\d{1,2}:\d{2}", community.get("schedule", ""))
+        community["start_time"] = m.group(0) if m else ""
         return community
     return {}
 
@@ -413,6 +458,9 @@ def setup_jinja_env() -> Environment:
     # カスタムフィルター
     env.filters["youtube_embed"] = youtube_embed_url
     env.filters["timestamp_seconds"] = timestamp_to_seconds
+    env.filters["date_iso"] = date_iso
+    env.filters["date_iso_full"] = date_iso_full
+    env.filters["date_parts"] = date_parts
 
     # グローバル変数
     env.globals["site_name"] = SITE_NAME

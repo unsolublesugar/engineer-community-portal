@@ -1,11 +1,27 @@
 number: 3
 title: 'LTイベント #3'
-date: '2024-03-26'
+date: '2026-06-30'
 event_url: https://connpass.com/
 youtube_url: ''
 hashtag: '#MyLT'
 talks:
-- title: （開催予定 - 発表者募集中）
+- title: テスト自動化のはじめかた
   speaker:
-    name: TBD
-    id: tbd
+    name: Speaker B
+    id: speaker_b
+  youtube_timestamp: '0:10:00'
+  tags:
+  - テスト
+  - 自動化
+- title: 個人開発を続けるコツ
+  speaker:
+    name: Speaker C
+    id: speaker_c
+  youtube_timestamp: '0:30:00'
+  tags:
+  - 個人開発
+- title: 'チャレンジコーナー: ライブリファクタリング'
+  speaker:
+    name: My Community
+    id: easy2
+  youtube_timestamp: '0:50:00'

@@ -5,6 +5,51 @@
 形式は [Keep a Changelog](https://keepachangelog.com/ja/1.1.0/) に基づき、
 バージョニングは [Semantic Versioning](https://semver.org/lang/ja/) に従います。
 
+## [v1.2.0] - 2026-07-26
+
+本家 [easy2-portal v1.2.0](https://github.com/unsolublesugar/easy2-portal/releases/tag/v1.2.0) のデザイン刷新をテンプレート側へ取り込みました。
+
+### Changed
+- サイト全体のデザインを刷新
+  - プライマリカラー: `#3ea8ff` 系 → `#1668dc` 系
+  - フォント: Inter → IBM Plex Sans JP
+  - ボタン・バッジ・フィルター・検索ボックスをピル形状（`border-radius: 99px`）に統一
+  - セクション見出しに青のアクセントバー（`.section-title`）と件数ピル（`.count-pill`）を追加
+  - トップ: 年フィルターをセグメンテッドコントロール化、カード内の発表プレビューを淡青ボックスに
+  - イベント詳細: レポート記事リンクをヘッダーカード内のピルに統合（単独バナーを廃止）、リソースリンクを色付きピル（動画=赤系 / 記事=緑系 / スライド=amber系）に、スライド埋め込みはピルの下へ移動
+  - 登壇者一覧・詳細: 検索ボックスをピル型に、登壇履歴を淡青ボックス内のリストに
+  - 企画コーナー: 縦積みリスト → カードグリッド
+  - About: 各セクションを白カード化
+  - 登壇者・運営メンバーの SNS リンクをアイコンからテキスト表記（X / GitHub / Qiita / Zenn / Web）に変更
+- 日付表記をサイト全体で ISO 形式（`YYYY-MM-DD`）に統一（イベント詳細ヘッダーのみ `YYYY-MM-DD（曜）`）
+  - Jinja2 フィルター `date_iso` / `date_iso_full` / `date_parts` を追加
+- イベント詳細ページからハッシュタグのシェアピルを削除（`community.yaml` の `hashtag` を使うシェアボタンは変更なし）
+- サンプルイベント `001.yaml`〜`005.yaml` の開催日を更新（開催予定表示・次回開催バナーの動作確認用）
+  - `001` / `002` / `003` は過去日付（2025-11-25 / 2025-12-30 / 2026-06-30）、`004` / `005` は未来日付（2026-08-25 / 2026-09-29）
+  - `003.yaml` は TBD 枠のみだったところを確定 LT 3 件に差し替え（過去イベントとしての表示確認用）
+  - 過去 3 件 / 開催予定 2 件・2 年分（2025 / 2026）となり、次回開催バナー・開催予定カード・年フィルターの動作を確認できる状態に
+
+### Added
+- トップページに次回開催バナーを追加
+  - 開催予定イベントのうち最も近い1件を、イベント一覧グリッドの外・上部に日付タイル付きの横長バナーで表示
+  - 日付タイルの開始時刻は `community.yaml` の `schedule` から `HH:MM` を自動抽出
+  - `event_url` があれば「参加登録する」、なければ「詳細を見る」に文言を切り替え
+  - バナーに出したイベントは一覧グリッドから除外
+- ヒーロー統計カードにアイコンタイルと単位表記（回 / 本）を追加
+
+### Fixed
+- モバイル表示の改善
+  - ヒーローの「参加する」ボタンは次回開催バナーの「参加登録する」と導線が重複するため、開催予定イベントがない期間のみ表示
+  - 小画面（440px 以下）でヘッダーナビが横溢れする不具合を修正
+  - 極小画面（320px）ではロゴのサイト名を省略表示にし、ナビ4項目が収まるように修正
+  - 登壇者一覧の登壇履歴の並び順を `#番号 → タイトル → 日付` に修正
+- 登壇者一覧でアイコン未設定時のイニシャルが円の中央に表示されない不具合を修正
+  - `.speaker-avatar-lg` の `display: block` が後勝ちで `.speaker-avatar-placeholder` の `display: flex` を打ち消していた
+
+### Docs
+- PR 作成時の assignee / label 付与ルールを追記
+- イベント YAML の `talks` に前座 / MC / 運営紹介を含めないルールを追記
+
 ## [v1.1.0] - 2026-04-29
 
 ### Added
@@ -51,6 +96,7 @@ YAML スキーマのフィールド名を変更しました。既存データを
 
 - 初回リリース
 
+[v1.2.0]: https://github.com/unsolublesugar/engineer-community-portal/compare/v1.1.0...v1.2.0
 [v1.1.0]: https://github.com/unsolublesugar/engineer-community-portal/compare/v1.0.1...v1.1.0
 [v1.0.1]: https://github.com/unsolublesugar/engineer-community-portal/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/unsolublesugar/engineer-community-portal/releases/tag/v1.0.0

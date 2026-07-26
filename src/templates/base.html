@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="{{ base_path }}/css/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header class="site-header">
@@ -52,20 +52,20 @@
       <div class="footer-content">
         <div class="footer-links">
           {% if community.community_url %}
-          <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
-            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="btn btn-outline">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             コミュニティ
           </a>
           {% endif %}
           {% if community.youtube_channel %}
-          <a href="{{ community.youtube_channel }}?sub_confirmation=1" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
-            <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 9 16 12 10 15 10 9"/></svg>
+          <a href="{{ community.youtube_channel }}?sub_confirmation=1" target="_blank" rel="noopener" class="btn btn-outline">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polygon points="10 9 16 12 10 15 10 9"/></svg>
             チャンネル登録
           </a>
           {% endif %}
         </div>
+        <p class="footer-copyright">© {{ site_name }} / Powered by <a href="https://github.com/unsolublesugar/engineer-community-portal" target="_blank" rel="noopener">Engineer Community Portal</a></p>
       </div>
-      <p class="footer-copyright">© {{ site_name }} / Powered by <a href="https://github.com/unsolublesugar/engineer-community-portal" target="_blank" rel="noopener">Engineer Community Portal</a></p>
     </div>
   </footer>
 

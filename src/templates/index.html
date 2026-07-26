@@ -4,35 +4,51 @@
 {% block nav_home %}active{% endblock %}
 
 {% block content %}
+{% set upcoming = events | selectattr('is_upcoming') | sort(attribute='date') | first %}
 <section class="hero">
   <div class="container">
     <h1 class="hero-title">{{ community.formal_name }}</h1>
     <p class="hero-subtitle">{{ community.description }}</p>
     <div class="hero-stats-grid">
       <div class="hero-stat-card">
-        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        <span class="hero-stat-number">{{ community.schedule | replace(' ', '<br>') | safe }}</span>
-        <span class="hero-stat-label">開催スケジュール</span>
+        <span class="hero-stat-icon-tile">
+          <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </span>
+        <div class="hero-stat-body">
+          <span class="hero-stat-number hero-stat-text">{{ community.schedule }}</span>
+          <span class="hero-stat-label">開催スケジュール</span>
+        </div>
       </div>
       <div class="hero-stat-card">
-        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        <span class="hero-stat-number">{{ events | length }}</span>
-        <span class="hero-stat-label">イベント開催数</span>
+        <span class="hero-stat-icon-tile">
+          <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </span>
+        <div class="hero-stat-body">
+          <span class="hero-stat-number">{{ events | length }}<span class="hero-stat-unit">回</span></span>
+          <span class="hero-stat-label">イベント開催数</span>
+        </div>
       </div>
       <div class="hero-stat-card">
-        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        <span class="hero-stat-number">{{ events | map(attribute='talk_count') | sum }}</span>
-        <span class="hero-stat-label">LT発表数</span>
+        <span class="hero-stat-icon-tile">
+          <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </span>
+        <div class="hero-stat-body">
+          <span class="hero-stat-number">{{ events | map(attribute='talk_count') | sum }}<span class="hero-stat-unit">本</span></span>
+          <span class="hero-stat-label">LT発表数</span>
+        </div>
       </div>
     </div>
+    <!-- モバイルは次回開催バナーの「参加登録する」と重複するため、開催予定がない場合のみ表示 -->
+    {% if not upcoming %}
     <a href="{{ community.community_url }}" target="_blank" rel="noopener" class="btn btn-primary hero-cta-mobile">参加する</a>
+    {% endif %}
   </div>
 </section>
 
 <section class="events-section">
   <div class="container">
     <div class="section-header">
-      <h2>イベント一覧</h2>
+      <h2>イベント一覧<span class="count-pill">全{{ events | length }}回</span></h2>
       <div class="year-filter" id="yearFilter">
         {% for year in years %}
         <button class="filter-btn{% if loop.first %} active{% endif %}" data-year="{{ year }}">{{ year }}</button>
@@ -41,10 +57,45 @@
       </div>
     </div>
 
+    <!-- 次回開催バナー: 開催予定イベントのうち最も近い1件をグリッド外に大きく表示 -->
+    {% if upcoming %}
+    {% set d = upcoming.date | date_parts %}
+    {% set upcoming_talks = (upcoming.talks or []) | rejectattr('speaker.id', 'equalto', 'tbd') | list %}
+    <a href="{{ upcoming.event_url if upcoming.event_url else base_path + '/events/' + '%03d' | format(upcoming.number) }}"
+       {% if upcoming.event_url %}target="_blank" rel="noopener"{% endif %} class="upcoming-banner">
+      <span class="upcoming-date-tile">
+        {% if d %}
+        <span class="upcoming-date-month">{{ d.month }}月</span>
+        <span class="upcoming-date-day">{{ d.day }}</span>
+        <span class="upcoming-date-week">{{ d.weekday }}{% if community.start_time %} {{ community.start_time }}{% endif %}</span>
+        {% else %}
+        <span class="upcoming-date-day">#{{ upcoming.number }}</span>
+        {% endif %}
+      </span>
+      <span class="upcoming-body">
+        <span class="upcoming-labels">
+          <span class="upcoming-badge">次回開催</span>
+          <span class="upcoming-number">#{{ upcoming.number }}</span>
+        </span>
+        <span class="upcoming-title">{{ upcoming.title }}</span>
+        <span class="upcoming-preview">
+          {%- if upcoming_talks -%}
+          {{ upcoming_talks[:2] | map(attribute='title') | join(' ／ ') }}{% if upcoming_talks | length > 2 %} ほか{% endif %} —
+          {% if upcoming.tbd_count > 0 %}残り{{ upcoming.tbd_count }}枠 登壇者募集中！{% else %}登壇者確定！{% endif %}
+          {%- else -%}
+          参加者・登壇者募集中！
+          {%- endif -%}
+        </span>
+      </span>
+      <span class="upcoming-cta">{% if upcoming.event_url %}参加登録する →{% else %}詳細を見る →{% endif %}</span>
+    </a>
+    {% endif %}
+
     <div class="events-grid" id="eventsGrid">
       {% for event in events %}
+      {% if not (upcoming and event.number == upcoming.number) %}
       {% set is_upcoming = event.is_upcoming %}
-      {% set confirmed_talks = event.talks | selectattr('speaker.id', 'ne', 'tbd') | list if event.talks else [] %}
+      {% set confirmed_talks = (event.talks or []) | rejectattr('speaker.id', 'equalto', 'tbd') | list %}
       <a href="{{ base_path }}/events/{{ '%03d' | format(event.number) }}" class="event-card{% if is_upcoming %} event-card-upcoming{% endif %}" data-year="{{ event.date[:4] if event.date else '' }}">
         <div class="event-card-header">
           <div class="event-card-header-left">
@@ -53,28 +104,26 @@
             <span class="event-upcoming-badge">開催予定</span>
             {% endif %}
           </div>
-          <span class="event-date">{{ event.date }}</span>
+          <span class="event-date">{{ event.date | date_iso }}</span>
         </div>
         <h3 class="event-card-title">{{ event.title }}</h3>
+        {% if confirmed_talks %}
+        <div class="event-card-talks">
+          {% for talk in confirmed_talks[:3] %}
+          <div class="talk-preview">
+            <span class="talk-preview-bullet"></span>
+            <span class="talk-preview-title">{{ talk.title }}</span>
+          </div>
+          {% endfor %}
+          {% if confirmed_talks | length > 3 %}
+          <span class="talk-more">+ {{ confirmed_talks | length - 3 }}件</span>
+          {% endif %}
+        </div>
+        {% endif %}
         {% if is_upcoming %}
         <div class="event-upcoming-body">
           {% if confirmed_talks %}
-          <div class="event-card-talks">
-            {% for talk in confirmed_talks[:3] %}
-            <div class="talk-preview">
-              <span class="talk-preview-bullet"></span>
-              <span class="talk-preview-title">{{ talk.title }}</span>
-            </div>
-            {% endfor %}
-            {% if confirmed_talks | length > 3 %}
-            <span class="talk-more">+ {{ confirmed_talks | length - 3 }}件</span>
-            {% endif %}
-          </div>
-          {% endif %}
-          {% if event.tbd_count == 0 and confirmed_talks %}
-          <p class="event-upcoming-message">登壇者確定！ぜひご参加ください。</p>
-          {% elif confirmed_talks %}
-          <p class="event-upcoming-message">残り{{ event.tbd_count }}枠 登壇者募集中！</p>
+          <p class="event-upcoming-message">{% if event.tbd_count > 0 %}残り{{ event.tbd_count }}枠 登壇者募集中！{% else %}登壇者確定！ぜひご参加ください。{% endif %}</p>
           {% else %}
           <p class="event-upcoming-message">参加者・登壇者募集中！</p>
           {% endif %}
@@ -86,7 +135,7 @@
         <div class="event-card-meta">
           {% if event.talk_count > 0 %}
           <span class="meta-item">
-            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
             {{ event.talk_count }}件の発表
           </span>
           {% endif %}
@@ -97,21 +146,9 @@
           </span>
           {% endif %}
         </div>
-        {% if event.talks and event.talks[0].speaker.id != 'tbd' %}
-        <div class="event-card-talks">
-          {% for talk in event.talks[:3] %}
-          <div class="talk-preview">
-            <span class="talk-preview-bullet"></span>
-            <span class="talk-preview-title">{{ talk.title }}</span>
-          </div>
-          {% endfor %}
-          {% if event.talks | length > 3 %}
-          <span class="talk-more">+ {{ event.talks | length - 3 }}件</span>
-          {% endif %}
-        </div>
-        {% endif %}
         {% endif %}
       </a>
+      {% endif %}
       {% endfor %}
     </div>
     <div class="load-more-wrapper" id="loadMoreWrapper" style="display: none;">
