@@ -9,8 +9,8 @@ title: "完全に理解したTalk #76"       # イベントタイトル（必須
 date: "2026-04-28"                   # 開催日（必須, YYYY-MM-DD）
 event_url: "https://easy2.connpass.com/event/XXXXX/"  # イベントページURL（任意, connpass / Doorkeeper / Peatix / TECH PLAY / Meetup 等を自動判定）
 youtube_url: "https://www.youtube.com/watch?v=XXXXX"     # YouTube配信URL（任意）
-report_url: ""                       # イベントレポート記事URL（任意）
-hashtag: "#完全に理解した"             # ハッシュタグ（任意）
+report_url: ""                       # イベントレポート記事URL（任意, ヘッダーカード内にピルリンクで表示）
+hashtag: "#完全に理解した"             # ハッシュタグ（任意, 現在イベント詳細ページでは非表示。シェア文言には community.yaml の hashtag を使用）
 
 # 発表一覧
 talks:
